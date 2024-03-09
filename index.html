@@ -8,7 +8,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
     <script src="scripts/api.js" defer></script>
-    <script type="module"></script>
+    <script type="module">
+      const post = async (body) => {
+        const options = {
+          method: "POST",
+          headers: getHeaders(),
+          body: JSON.stringify(body),
+        };
+
+        return await fetch(API_URL, options);
+      };
+
+      const getIDs = async (offset, limit) => {
+        const params = { offset, limit };
+        const body = {
+          action: "get_ids",
+          params,
+        };
+
+        const response = await post(body);
+        const result = response.json();
+
+        return result;
+      };
+    </script>
   </head>
   <body></body>
 </html>
