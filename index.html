@@ -60,15 +60,15 @@
       };
 
       const response = await getIDs(state.offset, LIMIT);
-      const products = response.result;
+      const products = new Set(response.result);
 
-      if (products.length > 0) {
+      if (products.size > 0) {
         const ol = mkElem("ol");
 
-        for (let i = 0; i < products.length; i++) {
-          let li = mkElem("li", null, null, products[i]);
+        for (const productItem of products) {
+          let li = mkElem("li", null, null, productItem);
           ol.appendChild(li);
-        }
+        };
 
         document.body.appendChild(ol);
       }
