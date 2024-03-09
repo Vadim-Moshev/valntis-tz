@@ -8,32 +8,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
     <script src="scripts/api.js" defer></script>
+    <script src="scripts/dom_api.js" defer></script>
     <script type="module">
       const LIMIT = 50;
       const state = {
         offset: 0,
-      };
-
-      const mkElem = (name, attributes, cssProps, textContent) => {
-        const e = document.createElement(name);
-
-        if (attributes) {
-          for (const attributeName in attributes) {
-            e[attributeName] = attributes[attributeName];
-          }
-        }
-
-        if (cssProps) {
-          for (const cssPropName in cssProps) {
-            e.style[cssPropName] = cssProps[cssPropName];
-          }
-        }
-
-        if (textContent) {
-          e.textContent = textContent;
-        }
-
-        return e;
       };
 
       const post = async (body) => {
@@ -68,7 +47,7 @@
         for (const productItem of products) {
           let li = mkElem("li", null, null, productItem);
           ol.appendChild(li);
-        };
+        }
 
         document.body.appendChild(ol);
       }
