@@ -116,18 +116,20 @@
         state.products = arrayOfProductsResponse.result;
       };
 
-      try {
-        loader.classList.add("loader-visible");
-        await fetchProducts();
-        if (state.error) {
+      window.onload = async () => {
+        try {
+          loader.classList.add("loader-visible");
+          await fetchProducts();
+          if (state.error) {
+            errorMessage.classList.add("error-message-visible");
+          } else {
+            displayData();
+          };
+        } catch {
           errorMessage.classList.add("error-message-visible");
-        } else {
-          displayData();
-        };
-      } catch {
-        errorMessage.classList.add("error-message-visible");
-      } finally {
-        loader.classList.remove("loader-visible");
+        } finally {
+          loader.classList.remove("loader-visible");
+        }
       }
     </script>
   </head>
