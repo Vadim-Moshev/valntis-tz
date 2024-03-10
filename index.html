@@ -30,6 +30,7 @@
 
       const state = {
         offset,
+        products: []
       };
 
       buttonPrev.onclick = () => {
@@ -102,11 +103,12 @@
           loader.classList.remove("loader-visible");
         };
 
-        const arrayOfProducts = await responseProducts.json();
+        const arrayOfProductsResponse = await responseProducts.json();
+        state.products = arrayOfProductsResponse.result;
         loader.classList.remove("loader-visible");
 
         if (setOfProductsIds.size > 0) {
-          const productsList = createProductsList(arrayOfProducts.result);
+          const productsList = createProductsList(state.products);
 
           document.body.appendChild(productsList);
         }
