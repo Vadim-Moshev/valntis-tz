@@ -32,6 +32,7 @@
         offset,
         products: [],
         setOfProductsIds: new Set(),
+        error: false,
 
       };
 
@@ -93,14 +94,12 @@
         return response;
       };
 
-      try {
-        loader.classList.add("loader-visible");
-
+      const fetchProducts = async () => {
         const responseProductIds = await getIDs(state.offset, LIMIT);
         if (!responseProductIds.ok) {
+          state.error = true;
           console.error(`Ошибка запроса: ${response.status}`);
-          errorMessage.classList.add("error-message-visible");
-          loader.classList.remove("loader-visible");
+          return;
         }
 
         const productIds = await responseProductIds.json();
@@ -108,18 +107,26 @@
 
         const responseProducts = await getItems(state.setOfProductsIds);
         if (!responseProducts.ok) {
+          state.error = true;
+          return;
           console.error(`Ошибка запроса: ${response.status}`);
-          errorMessage.classList.add("error-message-visible");
-          loader.classList.remove("loader-visible");
         };
 
         const arrayOfProductsResponse = await responseProducts.json();
         state.products = arrayOfProductsResponse.result;
-        loader.classList.remove("loader-visible");
+      };
 
-        displayData();
+      try {
+        loader.classList.add("loader-visible");
+        await fetchProducts();
+        if (state.error) {
+          errorMessage.classList.add("error-message-visible");
+        } else {
+          displayData();
+        };
       } catch {
         errorMessage.classList.add("error-message-visible");
+      } finally {
         loader.classList.remove("loader-visible");
       }
     </script>
