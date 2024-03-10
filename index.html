@@ -11,9 +11,44 @@
     <script src="scripts/dom_api.js" defer></script>
     <script type="module">
       const LIMIT = 50;
-      const state = {
-        offset: 0,
+
+      const parseSearchParams = () => {
+        const search = location.search.substring(1);
+        const pairs = search.split('&');
+        const obj = {};
+
+        pairs.forEach((item) => {
+          const [key, value] = item.split('=');
+          obj[key] = value;
+        });
+
+        return obj;
       };
+
+      const searchParams = parseSearchParams();
+      const offset = Number(searchParams.offset || 0);
+
+      const state = {
+        offset,
+      };
+
+      buttonPrev.onclick = () => {
+        const offset = state.offset;
+
+        if (state.offset === 0 ) {
+          location = `index.html?offset=${offset}`;
+          return;
+        };
+
+        location = `index.html?offset=${offset - LIMIT}`;
+      };
+
+      buttonNext.onclick = () => {
+        const offset = state.offset;
+        location = `index.html?offset=${offset + LIMIT}`;
+      };
+
+
 
       const post = async (body) => {
         const options = {
@@ -39,10 +74,10 @@
       };
 
       const getItems = async (setOfProductsIds) => {
-        const params = {ids: Array.from(setOfProductsIds)};
+        const params = { ids: Array.from(setOfProductsIds) };
         const body = {
           action: "get_items",
-          params
+          params,
         };
 
         const response = await post(body);
@@ -64,5 +99,10 @@
       }
     </script>
   </head>
-  <body></body>
+  <body>
+    <div>
+      <input type="button" value="Назад" id="buttonPrev" />
+      <input type="button" value="Вперёд" id="buttonNext" />
+    </div>
+  </body>
 </html>
