@@ -19,3 +19,24 @@ const mkElem = (name, attributes, cssProps, textContent) => {
 
   return e;
 };
+
+const createProductsList = (arrayOfProducts) => {
+  const processedProductsIds = new Set();
+  const productsList = mkElem("ol");
+
+  for (let i = 0; i < arrayOfProducts.length; i++) {
+    const { brand, id, price, product } = arrayOfProducts[i];
+    if (processedProductsIds.has(id)) {
+      continue;
+    }
+
+    const productString = `Бренд: ${brand || "(Нет)"}, id: ${id}, Цена: ${price}, Название: ${product}`;
+    const li = mkElem("li", null, null, productString);
+
+    productsList.appendChild(li);
+
+    processedProductsIds.add(id);
+  }
+
+  return productsList;
+};

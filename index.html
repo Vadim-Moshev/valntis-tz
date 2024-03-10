@@ -38,18 +38,29 @@
         return result;
       };
 
-      const response = await getIDs(state.offset, LIMIT);
-      const products = new Set(response.result);
+      const getItems = async (setOfProductsIds) => {
+        const params = {ids: Array.from(setOfProductsIds)};
+        const body = {
+          action: "get_items",
+          params
+        };
 
-      if (products.size > 0) {
-        const ol = mkElem("ol");
+        const response = await post(body);
+        const result = response.json();
 
-        for (const productItem of products) {
-          let li = mkElem("li", null, null, productItem);
-          ol.appendChild(li);
-        }
+        return result;
+      };
 
-        document.body.appendChild(ol);
+      const responseIds = await getIDs(state.offset, LIMIT);
+      const setOfProductsIds = new Set(responseIds.result);
+
+      const responseProducts = await getItems(setOfProductsIds);
+      const arrayOfProducts = responseProducts.result;
+
+      if (setOfProductsIds.size > 0) {
+        const productsList = createProductsList(arrayOfProducts);
+
+        document.body.appendChild(productsList);
       }
     </script>
   </head>
