@@ -78,9 +78,8 @@
         };
 
         const response = await post(body);
-        const result = response.json();
 
-        return result;
+        return response;
       };
 
       try {
@@ -90,17 +89,24 @@
         if (!responseProductIds.ok) {
           console.error(`Ошибка запроса: ${response.status}`);
           errorMessage.classList.add("error-message-visible");
+          loader.classList.remove("loader-visible");
         }
 
         const productIds = await responseProductIds.json();
         const setOfProductsIds = new Set(productIds.result);
 
         const responseProducts = await getItems(setOfProductsIds);
-        const arrayOfProducts = responseProducts.result;
+        if (!responseProducts.ok) {
+          console.error(`Ошибка запроса: ${response.status}`);
+          errorMessage.classList.add("error-message-visible");
+          loader.classList.remove("loader-visible");
+        };
+
+        const arrayOfProducts = await responseProducts.json();
         loader.classList.remove("loader-visible");
 
         if (setOfProductsIds.size > 0) {
-          const productsList = createProductsList(arrayOfProducts);
+          const productsList = createProductsList(arrayOfProducts.result);
 
           document.body.appendChild(productsList);
         }
