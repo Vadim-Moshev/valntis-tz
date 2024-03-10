@@ -14,11 +14,11 @@
 
       const parseSearchParams = () => {
         const search = location.search.substring(1);
-        const pairs = search.split('&');
+        const pairs = search.split("&");
         const obj = {};
 
         pairs.forEach((item) => {
-          const [key, value] = item.split('=');
+          const [key, value] = item.split("=");
           obj[key] = value;
         });
 
@@ -35,10 +35,10 @@
       buttonPrev.onclick = () => {
         const offset = state.offset;
 
-        if (state.offset === 0 ) {
+        if (state.offset === 0) {
           location = `index.html?offset=${offset}`;
           return;
-        };
+        }
 
         location = `index.html?offset=${offset - LIMIT}`;
       };
@@ -47,8 +47,6 @@
         const offset = state.offset;
         location = `index.html?offset=${offset + LIMIT}`;
       };
-
-
 
       const post = async (body) => {
         const options = {
@@ -86,11 +84,14 @@
         return result;
       };
 
+      loader.classList.add('loader-visible');
       const responseIds = await getIDs(state.offset, LIMIT);
       const setOfProductsIds = new Set(responseIds.result);
 
       const responseProducts = await getItems(setOfProductsIds);
       const arrayOfProducts = responseProducts.result;
+      loader.classList.remove('loader-visible');
+
 
       if (setOfProductsIds.size > 0) {
         const productsList = createProductsList(arrayOfProducts);
@@ -104,5 +105,6 @@
       <input type="button" value="Назад" id="buttonPrev" />
       <input type="button" value="Вперёд" id="buttonNext" />
     </div>
+    <img class="loader" id="loader" src="img/loader.gif" alt="" />
   </body>
 </html>
