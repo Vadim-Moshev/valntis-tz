@@ -5,3 +5,11 @@
 .loader-visible {
   display: inline;
 }
+
+.error-message {
+  display: none;
+}
+
+.error-message-visible {
+  display: block;
+}

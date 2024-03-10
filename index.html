@@ -66,9 +66,8 @@
         };
 
         const response = await post(body);
-        const result = response.json();
 
-        return result;
+        return response;
       };
 
       const getItems = async (setOfProductsIds) => {
@@ -84,19 +83,30 @@
         return result;
       };
 
-      loader.classList.add('loader-visible');
-      const responseIds = await getIDs(state.offset, LIMIT);
-      const setOfProductsIds = new Set(responseIds.result);
+      try {
+        loader.classList.add("loader-visible");
 
-      const responseProducts = await getItems(setOfProductsIds);
-      const arrayOfProducts = responseProducts.result;
-      loader.classList.remove('loader-visible');
+        const responseProductIds = await getIDs(state.offset, LIMIT);
+        if (!responseProductIds.ok) {
+          console.error(`Ошибка запроса: ${response.status}`);
+          errorMessage.classList.add("error-message-visible");
+        }
 
+        const productIds = await responseProductIds.json();
+        const setOfProductsIds = new Set(productIds.result);
 
-      if (setOfProductsIds.size > 0) {
-        const productsList = createProductsList(arrayOfProducts);
+        const responseProducts = await getItems(setOfProductsIds);
+        const arrayOfProducts = responseProducts.result;
+        loader.classList.remove("loader-visible");
 
-        document.body.appendChild(productsList);
+        if (setOfProductsIds.size > 0) {
+          const productsList = createProductsList(arrayOfProducts);
+
+          document.body.appendChild(productsList);
+        }
+      } catch {
+        errorMessage.classList.add("error-message-visible");
+        loader.classList.remove("loader-visible");
       }
     </script>
   </head>
@@ -105,6 +115,9 @@
       <input type="button" value="Назад" id="buttonPrev" />
       <input type="button" value="Вперёд" id="buttonNext" />
     </div>
+    <p id="errorMessage" class="error-message">
+      Возникла ошибка. Перезагрузите страницу.
+    </p>
     <img class="loader" id="loader" src="img/loader.gif" alt="" />
   </body>
 </html>
