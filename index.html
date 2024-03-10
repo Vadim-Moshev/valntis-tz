@@ -51,6 +51,14 @@
         location = `index.html?offset=${offset + LIMIT}`;
       };
 
+      const displayData = () => {
+        if (state.setOfProductsIds.size > 0) {
+          const productsList = createProductsList(state.products);
+
+          document.body.appendChild(productsList);
+        }
+      };
+
       const post = async (body) => {
         const options = {
           method: "POST",
@@ -109,11 +117,7 @@
         state.products = arrayOfProductsResponse.result;
         loader.classList.remove("loader-visible");
 
-        if (state.setOfProductsIds.size > 0) {
-          const productsList = createProductsList(state.products);
-
-          document.body.appendChild(productsList);
-        }
+        displayData();
       } catch {
         errorMessage.classList.add("error-message-visible");
         loader.classList.remove("loader-visible");
