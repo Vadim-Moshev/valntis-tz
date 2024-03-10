@@ -1,15 +1,11 @@
-.loader {
+.loader,
+.error-message,
+.no-data-message {
   display: none;
 }
 
-.loader-visible {
-  display: inline;
-}
-
-.error-message {
-  display: none;
-}
-
-.error-message-visible {
+.loader-visible,
+.error-message-visible,
+.no-data-message-visible {
   display: block;
 }

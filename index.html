@@ -33,7 +33,6 @@
         products: [],
         setOfProductsIds: new Set(),
         error: false,
-
       };
 
       buttonPrev.onclick = () => {
@@ -57,7 +56,9 @@
           const productsList = createProductsList(state.products);
 
           document.body.appendChild(productsList);
-        }
+        } else {
+          noDataMessage.classList.add('no-data-message-visible');
+        };
       };
 
       const post = async (body) => {
@@ -110,7 +111,7 @@
           state.error = true;
           return;
           console.error(`Ошибка запроса: ${response.status}`);
-        };
+        }
 
         const arrayOfProductsResponse = await responseProducts.json();
         state.products = arrayOfProductsResponse.result;
@@ -124,13 +125,13 @@
             errorMessage.classList.add("error-message-visible");
           } else {
             displayData();
-          };
+          }
         } catch {
           errorMessage.classList.add("error-message-visible");
         } finally {
           loader.classList.remove("loader-visible");
         }
-      }
+      };
     </script>
   </head>
   <body>
@@ -140,6 +141,9 @@
     </div>
     <p id="errorMessage" class="error-message">
       Возникла ошибка. Перезагрузите страницу.
+    </p>
+    <p id="noDataMessage" class="no-data-message">
+      Нет данных для отображения.
     </p>
     <img class="loader" id="loader" src="img/loader.gif" alt="" />
   </body>
