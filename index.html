@@ -32,7 +32,7 @@
         products: [],
         setOfProductsIds: new Set(),
         error: false,
-        fiter: false,
+        filter: false,
         filterPrice: "",
         filterBrand: "",
         filterProduct: "",
@@ -54,7 +54,7 @@
         state.filterPrice = price;
         state.filterBrand = brand;
         state.filterProduct = product;
-        state.fiter = true;
+        state.filter = true;
       };
 
       buttonPrev.onclick = () => {
@@ -142,6 +142,16 @@
         return response;
       };
 
+      const getIDsByFilter = async (params) => {
+        const body = {
+          action: "filter",
+          params,
+        };
+
+        const response = await post(body);
+        return response;
+      };
+
       const getItems = async (setOfProductsIds) => {
         const params = { ids: Array.from(setOfProductsIds) };
         const body = {
@@ -155,7 +165,33 @@
       };
 
       const fetchProducts = async () => {
-        const responseProductIds = await getIDs(state.offset, LIMIT);
+        let responseProductIds;
+
+        if (state.filter) {
+          const filterParams = {};
+          const { filterBrand, filterPrice, filterProduct } = state;
+
+          if (filterBrand !== "") {
+            filterParams.brand = filterBrand;
+          }
+
+          if (filterPrice !== "") {
+            filterParams.price = filterPrice;
+          }
+
+          if (filterProduct !== "") {
+            filterParams.product = filterProduct;
+          }
+
+          responseProductIds = await getIDsByFilter(filterParams);
+          console.log('Фильтр');
+        } else {
+          responseProductIds = await getIDs(state.offset, LIMIT);
+          console.log('Обычный запрос');
+          console.log('Стейт фильтр равен =', state.filter);
+
+        }
+
         if (!responseProductIds.ok) {
           state.error = true;
           console.error(`Ошибка запроса: ${response.status}`);
