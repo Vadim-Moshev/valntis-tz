@@ -52,8 +52,6 @@
       };
 
       formFilter.onsubmit = (event) => {
-        event.preventDefault();
-
         const searchPairs = [];
 
         const [price, brand, product] = [
@@ -81,6 +79,7 @@
 
         const searchString = searchPairs.join("&");
         location = `index.html?${searchString}`;
+        event.preventDefault();
       };
 
       const displayData = () => {
