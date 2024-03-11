@@ -57,8 +57,8 @@
 
           document.body.appendChild(productsList);
         } else {
-          noDataMessage.classList.add('no-data-message-visible');
-        };
+          noDataMessage.classList.add("no-data-message-visible");
+        }
       };
 
       const post = async (body) => {
@@ -145,6 +145,19 @@
     <p id="noDataMessage" class="no-data-message">
       Нет данных для отображения.
     </p>
+    <fieldset>
+      <legend>Фильтрация</legend>
+      <form>
+        <span>Цена</span>
+        <input type="number" id="filterFieldPrice" />
+        <span>Бренд</span>
+        <input type="text" id="filterFieldBrand" />
+        <span>Наименование продукта</span>
+        <input type="number" id="filterFieldProduct" />
+        <input type="submit" value="Отфильтровать" />
+        <input type="reset" value="Сбросить фильтр" />
+      </form>
+    </fieldset>
     <img class="loader" id="loader" src="img/loader.gif" alt="" />
   </body>
 </html>
