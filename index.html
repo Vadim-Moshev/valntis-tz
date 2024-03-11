@@ -54,21 +54,33 @@
       formFilter.onsubmit = (event) => {
         event.preventDefault();
 
-        const paramsObject = {};
+        const searchPairs = [];
 
-        if (filterFieldPrice.value !== "") {
-          paramsObject.price = Number(filterFieldPrice.value);
+        const [price, brand, product] = [
+          filterFieldPrice.value,
+          encodeURI(filterFieldBrand.value),
+          encodeURI(filterFieldProduct.value),
+        ];
+
+        if (price !== "") {
+          searchPairs.push(`price=${price}`);
         }
 
-        if (filterFieldBrand.value !== "") {
-          paramsObject.brand = filterFieldBrand.value;
+        if (brand !== "") {
+          searchPairs.push(`brand=${brand}`);
         }
 
-        if (filterFieldProduct.value !== "") {
-          paramsObject.product = filterFieldProduct.value;
+        if (product !== "") {
+          searchPairs.push(`product=${product}`);
         }
 
-        console.log(paramsObject);
+        if (searchPairs.length === 0) {
+          alert("Введите данные для фильтрации");
+          return;
+        }
+
+        const searchString = searchPairs.join("&");
+        location = `index.html?${searchString}`;
       };
 
       const displayData = () => {
