@@ -25,14 +25,30 @@
         return obj;
       };
 
-      const searchParams = parseSearchParams();
-      const offset = Number(searchParams.offset || 0);
+      const offset = Number(parseSearchParams().offset || 0);
 
       const state = {
         offset,
         products: [],
         setOfProductsIds: new Set(),
         error: false,
+        fiter: false,
+        filterPrice: "",
+        filterBrand: "",
+        filterProduct: "",
+      };
+
+      const initFilterParams = () => {
+        const { price = "", brand = "", product = "" } = parseSearchParams();
+
+        if (!price && !brand && !product) {
+          return;
+        }
+
+        state.filterPrice = price;
+        state.filterBrand = brand;
+        state.filterProduct = product;
+        state.fiter = true;
       };
 
       buttonPrev.onclick = () => {
@@ -153,6 +169,9 @@
       };
 
       window.onload = async () => {
+        initFilterParams();
+        console.log(state);
+
         try {
           loader.classList.add("loader-visible");
           await fetchProducts();
