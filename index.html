@@ -51,6 +51,10 @@
         location = `index.html?offset=${offset + LIMIT}`;
       };
 
+      formFilter.onreset = () => {
+        location = "index.html";
+      };
+
       formFilter.onsubmit = (event) => {
         const searchPairs = [];
 
