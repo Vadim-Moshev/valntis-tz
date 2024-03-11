@@ -51,6 +51,26 @@
         location = `index.html?offset=${offset + LIMIT}`;
       };
 
+      formFilter.onsubmit = (event) => {
+        event.preventDefault();
+
+        const paramsObject = {};
+
+        if (filterFieldPrice.value !== "") {
+          paramsObject.price = Number(filterFieldPrice.value);
+        }
+
+        if (filterFieldBrand.value !== "") {
+          paramsObject.brand = filterFieldBrand.value;
+        }
+
+        if (filterFieldProduct.value !== "") {
+          paramsObject.product = filterFieldProduct.value;
+        }
+
+        console.log(paramsObject);
+      };
+
       const displayData = () => {
         if (state.setOfProductsIds.size > 0) {
           const productsList = createProductsList(state.products);
@@ -147,15 +167,15 @@
     </p>
     <fieldset>
       <legend>Фильтрация</legend>
-      <form>
+      <form id="formFilter">
         <span>Цена</span>
-        <input type="number" id="filterFieldPrice" />
+        <input type="number" min="1" id="filterFieldPrice" />
         <span>Бренд</span>
         <input type="text" id="filterFieldBrand" />
         <span>Наименование продукта</span>
-        <input type="number" id="filterFieldProduct" />
+        <input type="text" id="filterFieldProduct" />
         <input type="submit" value="Отфильтровать" />
-        <input type="reset" value="Сбросить фильтр" />
+        <input type="reset" value="Сбросить фильтр" id="buttonResetFilter" />
       </form>
     </fieldset>
     <img class="loader" id="loader" src="img/loader.gif" alt="" />
