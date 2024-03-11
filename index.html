@@ -99,6 +99,8 @@
         }
 
         if (searchPairs.length === 0) {
+          event.preventDefault();
+
           alert("Введите данные для фильтрации");
           return;
         }
