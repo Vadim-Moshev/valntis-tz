@@ -38,6 +38,12 @@
         filterProduct: "",
       };
 
+      const initFilterFields = () => {
+        filterFieldPrice.value = state.filterPrice;
+        filterFieldBrand.value = state.filterBrand;
+        filterFieldProduct.value = state.filterProduct;
+      };
+
       const initFilterParams = () => {
         const { price = "", brand = "", product = "" } = parseSearchParams();
 
@@ -170,6 +176,7 @@
 
       window.onload = async () => {
         initFilterParams();
+        initFilterFields();
         console.log(state);
 
         try {
