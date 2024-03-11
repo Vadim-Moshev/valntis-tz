@@ -40,8 +40,8 @@
 
       const initFilterFields = () => {
         filterFieldPrice.value = state.filterPrice;
-        filterFieldBrand.value = state.filterBrand;
-        filterFieldProduct.value = state.filterProduct;
+        filterFieldBrand.value = decodeURI(state.filterBrand);
+        filterFieldProduct.value = decodeURI(state.filterProduct);
       };
 
       const initFilterParams = () => {
@@ -51,9 +51,9 @@
           return;
         }
 
-        state.filterPrice = price;
-        state.filterBrand = brand;
-        state.filterProduct = product;
+        state.filterPrice = Number(price);
+        state.filterBrand = decodeURI(brand);
+        state.filterProduct = decodeURI(product);
         state.filter = true;
       };
 
@@ -184,12 +184,11 @@
           }
 
           responseProductIds = await getIDsByFilter(filterParams);
-          console.log('Фильтр');
+          console.log("Фильтр");
         } else {
           responseProductIds = await getIDs(state.offset, LIMIT);
-          console.log('Обычный запрос');
-          console.log('Стейт фильтр равен =', state.filter);
-
+          console.log("Обычный запрос");
+          console.log("Стейт фильтр равен =", state.filter);
         }
 
         if (!responseProductIds.ok) {
