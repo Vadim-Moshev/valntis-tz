@@ -184,11 +184,8 @@
           }
 
           responseProductIds = await getIDsByFilter(filterParams);
-          console.log("Фильтр");
         } else {
           responseProductIds = await getIDs(state.offset, LIMIT);
-          console.log("Обычный запрос");
-          console.log("Стейт фильтр равен =", state.filter);
         }
 
         if (!responseProductIds.ok) {
@@ -214,7 +211,6 @@
       window.onload = async () => {
         initFilterParams();
         initFilterFields();
-        console.log(state);
 
         try {
           loader.classList.add("loader-visible");
