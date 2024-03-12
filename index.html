@@ -51,7 +51,7 @@
           return;
         }
 
-        state.filterPrice = Number(price);
+        state.filterPrice = Number(price) || "";
         state.filterBrand = decodeURI(brand);
         state.filterProduct = decodeURI(product);
         state.filter = true;
@@ -183,6 +183,7 @@
             filterParams.product = filterProduct;
           }
 
+          console.log(filterParams);
           responseProductIds = await getIDsByFilter(filterParams);
         } else {
           responseProductIds = await getIDs(state.offset, LIMIT);
